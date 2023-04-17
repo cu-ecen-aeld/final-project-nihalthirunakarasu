@@ -5,10 +5,18 @@
 using namespace cv;
 using namespace std;
 
+#define H_RES 320
+#define V_RES 240
+#define FPS 30
+
 int main(int argc, char** argv)
 {
     // Open the default camera
     VideoCapture cap(0);
+    
+    //cap.set(CAP_PROP_FRAME_WIDTH, H_RES);
+    //cap.set(CAP_PROP_FRAME_HEIGHT, V_RES);
+    cap.set(CAP_PROP_FPS, FPS);
 
     // Check if camera opened successfully
     if(!cap.isOpened()){
@@ -17,7 +25,7 @@ int main(int argc, char** argv)
     }
 
     // Create a window for the video display
-    namedWindow("Camera", WINDOW_NORMAL);
+    //namedWindow("Camera", WINDOW_NORMAL);
 
     // Loop to read frames from the camera and display them in the window
     while(true){
@@ -36,7 +44,7 @@ int main(int argc, char** argv)
         imshow("Camera", frame);
 
         // Wait for 30 milliseconds and check if user wants to quit
-        if(waitKey(30) == 27){
+        if(waitKey(10) == 27){
             cout << "User quit" << endl;
             break;
         }
