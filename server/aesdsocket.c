@@ -27,20 +27,21 @@ Reference: https://beej.us/guide/bgnet/html/
 #include <linux/fs.h>
 #include <sys/stat.h>
 
-#include "../aesd-char-driver/aesd_ioctl.h"
-
 #define DEBUG 1
 #define ASCII_NEWLINE 10
 #define PORT_NUMBER 9000
 #define INIT_BUF_SIZE 1024
 #define TIME_PERIOD 10
+#define TIME_STAMP 0
+
 
 // A8 build switch
-#define USE_AESD_CHAR_DEVICE 1 // Comment for normal AESD socket working
+//#define USE_AESD_CHAR_DEVICE 1 // Comment for normal AESD socket working
 
 #ifndef USE_AESD_CHAR_DEVICE
 char socket_file_path[50] = "/var/tmp/aesdsocketdata";
 #else
+#include "../aesd-char-driver/aesd_ioctl.h"
 char socket_file_path[50] = "/dev/aesdchar";
 #endif
 
@@ -62,9 +63,21 @@ struct clean_up_data
     char* rx_storage_buff;
 };
 
+
 #ifndef USE_AESD_CHAR_DEVICE
+#if TIME_STAMP
 void *print_cal()
 {
+    int socket_file_fd_print_cal;
+
+    socket_file_fd_print_cal = open(socket_file_path, O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH | S_IWOTH);
+    if(socket_file_fd_print_cal == -1) // returns -1 on error else file descriptor
+    {
+        printf("\nError: Failed open(). Error code: %d\n", errno);
+        // Syslog the error into the syslog file in /var/log
+        syslog(LOG_ERR, "Error: Failed open(). Error code: %d", errno);
+    }
+
     struct timespec ts;
     time_t t;
     struct tm* temp;
@@ -122,7 +135,7 @@ void *print_cal()
             break;
         }
 
-        if (-1 == write(socket_file_fd, buffer, len))
+        if (-1 == write(socket_file_fd_print_cal, buffer, len))
         {
             perror("write timestamp failed: ");
         }
@@ -132,8 +145,20 @@ void *print_cal()
             break;
         }
     }
+
+    int status;
+    status = close(socket_file_fd_print_cal);
+    if(status != 0) // returns 0 if it succeeds else -1 on error
+    {
+        printf("\nError: Failed close() the socket_file_fd. Error code: %d\n", errno);
+        // Syslog the error into the syslog file in /var/log
+        syslog(LOG_ERR, "Error: Failed close() the server_socket_fd. Error code: %d", errno);
+        // exit(-1);
+    }   
+
     return NULL;
 }
+#endif
 #endif
 
 void sig_handler(int signum)
@@ -525,12 +550,27 @@ void *thread_func(void *arg)
     }
 #endif
 
+    char *tx_storage_buffer;
+#ifndef USE_AESD_CHAR_DEVICE
+    /*********************************************************************************************************
+                                    Writing to file /var/tmp/aesdsocketdata
+    **********************************************************************************************************/
+    int bytes_written = write(socket_file_fd, rx_storage_buffer, rx_storage_buffer_len);
+    if(bytes_written == -1) // returns -1 on error else number of bytes written
+    {
+        printf("\nError: Failed write(). Error code: %d\n", errno);
+        // Syslog the error into the syslog file in /var/log
+        syslog(LOG_ERR, "Error: Failed write(). Error code: %d", errno);
+        // return -1;
+        goto err_handle;
+    }
+#else
     /*********************************************************************************************************
                                     Writing to file /var/tmp/aesdsocketdata
     **********************************************************************************************************/
     const char ioctl_aesdchar_seek_to[] = "AESDCHAR_IOCSEEKTO:";
     int status;
-    char *tx_storage_buffer;
+   
 
     status = strncmp(rx_storage_buffer, ioctl_aesdchar_seek_to, strlen(ioctl_aesdchar_seek_to));
     if(status == 0)
@@ -570,9 +610,8 @@ void *thread_func(void *arg)
             goto err_handle;
         }
     }
-    
-
-    
+#endif
+ 
 
 
 #ifndef USE_AESD_CHAR_DEVICE
@@ -959,6 +998,7 @@ int main (int argc, char** argv)
     node_t *head = NULL;
 
 #ifndef USE_AESD_CHAR_DEVICE
+#if TIME_STAMP
     // Thread for timer handling
     pthread_t timer_thread_id;
     status = pthread_create(&timer_thread_id, NULL, print_cal, NULL);
@@ -973,6 +1013,7 @@ int main (int argc, char** argv)
     {
         printf("Spawning timer thread with ID: %lu!\n", timer_thread_id);
     }
+#endif
 #endif
 
     /*********************************************************************************************************
@@ -1054,9 +1095,9 @@ int main (int argc, char** argv)
     // printf("Was here!\n");
 
 #ifndef USE_AESD_CHAR_DEVICE
-
+#if TIME_STAMP
     pthread_join(timer_thread_id, NULL);
-
+#endif
 #endif
 
     return 0;

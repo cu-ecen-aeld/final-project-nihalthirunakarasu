@@ -1,11 +1,11 @@
 INCLUDE_DIRS=
 LIB_DIRS=
-CC 	?= $(CROSS_COMPILE)gcc
+CC 	:= $(CROSS_COMPILE)gcc
 
 CDEFS=
-CFLAGS	?= -g -Werror -Wall $(INCLUDE_DIRS) $(CDEFS)
+CFLAGS	:= -g -Werror -Wall $(INCLUDE_DIRS) $(CDEFS)
 LIBS=  
-LDFLAGS ?= -pthread -lrt
+LDFLAGS := -pthread -lrt
 
 HFILES=
 CFILES=aesdsocket.c
