@@ -2,5 +2,11 @@ Resources:
 1. OpenCV on Raspberry
 https://raspberrypi-guide.github.io/programming/install-opencv
 
-2. OpenCV C++ package
+2. OpenCV C++ package (Following only this will work)
 https://vegastack.com/tutorials/how-to-install-opencv-on-ubuntu-20-04/
+
+3. The make file after enabling cross compile was throwing the below error:
+/usr/bin/ld: /tmp/ccUQTWfm.o: undefined reference to symbol '_ZTIPKc@@CXXABI_1.3'
+/usr/bin/ld: /lib/x86_64-linux-gnu/libstdc++.so.6: error adding symbols: DSO missing from command line
+
+So I had to add the library -lstdc++ in order to link the standard C++ library
