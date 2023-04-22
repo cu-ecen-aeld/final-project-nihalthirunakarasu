@@ -2,3 +2,5 @@
 *.exe
 *.out
 aesd_opencv
+aesdsocket_server
+aesdsocket_client

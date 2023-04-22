@@ -469,7 +469,7 @@ void *thread_func(void *arg)
         for(i=0; i<rx_data_len; ++i)
         {   
             // Looking for new line character
-            if(rx_buffer[i] == ASCII_NEWLINE)
+            if(rx_buffer[i] == 3)
             {
                 packet_complete = true;
                 break;
@@ -526,7 +526,7 @@ void *thread_func(void *arg)
     printf("Data Len Received: %d\n", rx_storage_buffer_len);
     for(i=0;i<rx_storage_buffer_len;i++)
     {
-        printf("%c", *(rx_storage_buffer+i));
+        printf("%c:", *(rx_storage_buffer+i));
     }
     printf("\n"); // It seems line the system was buffering the printf so absense of new line was making it buffer and printing only the next time new line was met
     // Refer to https://stackoverflow.com/questions/39180642/why-does-printf-not-produce-any-output

@@ -286,7 +286,26 @@ int main (int argc, char** argv)
     // write(2).
     // ssize_t send(int sockfd, const void *buf, size_t len, int flags);
     // manpage : https://man7.org/linux/man-pages/man2/send.2.html
-    char string[] = "HI my name is nihal\n";
+    
+    int file_fd = open("./test.txt", O_RDWR | O_APPEND);
+
+    int file_size = lseek(file_fd, 0, SEEK_END);
+    lseek(file_fd, 0, SEEK_SET);
+    printf("\nSize of file is: %d bytes\n", file_size);
+    char* string = (char*) malloc(file_size);
+    int bytes_read = read(file_fd, string, file_size);
+    if(bytes_read == -1) // returns -1 on error else number of bytes read
+    {
+        printf("\nError: Failed read(). Error code: %d\n", errno);
+        // Syslog the error into the syslog file in /var/log
+        syslog(LOG_ERR, "Error: Failed read(). Error code: %d", errno);
+        // return -1;
+    }
+    string[file_size] = 3;
+
+    printf("The string is:\n%s\n", string);
+
+    // char string[] = "Hi my name is nihal\n";
     status = send(client_socket_fd, string, strlen(string), 0);
     if(status == -1) // -1 if error else number of bytes transmitted
     {
