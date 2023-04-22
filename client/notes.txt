@@ -1,0 +1,9 @@
+1. The below command will send the string over socket to the server on localhost port number 9000. The output will be stored in output.txt
+echo "Hi There!" | nc localhost 9000 -w 1 > output.txt
+
+2.The below command will send the string over socket to the server on localhost and store the output in output.txt 
+cat test.txt | nc localhost 9000 -w 1 > output.txt
+
+3. From raspberry run the server code and run the below to send data over internet from mac this will connect to the port over internet
+echo "hi there" | nc 10.0.0.216 9000 -w 1
+where 10.0.0.216 is the raspberry's IP

@@ -552,18 +552,18 @@ void *thread_func(void *arg)
 
     char *tx_storage_buffer;
 #ifndef USE_AESD_CHAR_DEVICE
-    /*********************************************************************************************************
-                                    Writing to file /var/tmp/aesdsocketdata
-    **********************************************************************************************************/
-    int bytes_written = write(socket_file_fd, rx_storage_buffer, rx_storage_buffer_len);
-    if(bytes_written == -1) // returns -1 on error else number of bytes written
-    {
-        printf("\nError: Failed write(). Error code: %d\n", errno);
-        // Syslog the error into the syslog file in /var/log
-        syslog(LOG_ERR, "Error: Failed write(). Error code: %d", errno);
-        // return -1;
-        goto err_handle;
-    }
+    // /*********************************************************************************************************
+    //                                 Writing to file /var/tmp/aesdsocketdata
+    // **********************************************************************************************************/
+    // int bytes_written = write(socket_file_fd, rx_storage_buffer, rx_storage_buffer_len);
+    // if(bytes_written == -1) // returns -1 on error else number of bytes written
+    // {
+    //     printf("\nError: Failed write(). Error code: %d\n", errno);
+    //     // Syslog the error into the syslog file in /var/log
+    //     syslog(LOG_ERR, "Error: Failed write(). Error code: %d", errno);
+    //     // return -1;
+    //     goto err_handle;
+    // }
 #else
     /*********************************************************************************************************
                                     Writing to file /var/tmp/aesdsocketdata
@@ -819,10 +819,11 @@ void clean_ll(node_t** head, int is_flag)
 
 int main (int argc, char** argv)
 {
+    printf("AESD Server\n");
     // Appends aesdsocket.c to all the logs by default t is the program name
     // LOG_PERROR also logs error to stderr
     // Sets the facility to USER
-    openlog("aesdsocket.c", LOG_PERROR, LOG_USER);
+    openlog("aesdsocket_server.c", LOG_PERROR, LOG_USER);
 
     // Initializing signals and their respective signal handlers
     sig_init();
@@ -854,9 +855,9 @@ int main (int argc, char** argv)
     
     // @ToDo (Comments these out):
         if (run_as_daemon)
-        printf("Daemon: Hello, World!\n");
+        printf("Daemon: Hello, World from server!\n");
     else
-        printf("Normal: Hello, World!\n");
+        printf("Normal: Hello, World from server!\n");
 
     /*********************************************************************************************************
                                                 Server Setup

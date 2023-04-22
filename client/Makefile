@@ -8,19 +8,19 @@ LIBS=
 LDFLAGS := -pthread -lrt
 
 HFILES=
-CFILES=aesdsocket_server.c
+CFILES=aesdsocket_client.c
 
 SRCS= ${HFILES} ${CFILES}
 OBJS= ${CFILES:.c=.o}
 
-all:aesdsocket_server
+all:aesdsocket_client
 
 clean:
-	-rm -f *.o *.d *.elf aesdsocket_server
-	-rm -f aesdsocket_server
+	-rm -f *.o *.d *.elf aesdsocket_client
+	-rm -f aesdsocket_client
 
-aesdsocket_server:aesdsocket_server.c
-	$(CC) aesdsocket_server.c $(CFLAGS) -o $@ $(LDFLAGS)
+aesdsocket_client:aesdsocket_client.c
+	$(CC) aesdsocket_client.c $(CFLAGS) -o $@ $(LDFLAGS)
 
 depend:
 
