@@ -1,5 +1,5 @@
 # the ?= is not compatible in all the make versions so making it cross compatible by using := instead
-INCLUDE_DIRS = -I/usr/include/opencv4
+INCLUDE_DIRS = -I /usr/include/opencv4/opencv2
 #INCLUDE_DIRS=
 LIB_DIRS = 
 CROSS_COMPILE =
@@ -8,7 +8,7 @@ ifeq ($(CC),)
 endif
 #CC 	:= $(CROSS_COMPILE)g++
 ifeq ($(CFLAGS),)
-	CFLAGS:= -O0 -g $(INCLUDE_DIRS) $(CDEFS)
+	CFLAGS:= -O0 -g -I /usr/include/opencv4/opencv2 $(CDEFS)
 endif
 CDEFS=
 

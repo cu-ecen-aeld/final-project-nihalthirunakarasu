@@ -16,7 +16,7 @@
  *          https://towardsdatascience.com/image-analysis-for-beginners-creating-a-motion-detector-with-opencv-4ca6faba4b42 
  * 
  ********************************************************************************/
-#include <opencv4/opencv2/opencv.hpp>
+#include <opencv2/opencv.hpp>
 #include <iostream>
 
 using namespace cv;
