@@ -454,7 +454,7 @@ void *thread_func(void *arg)
     // connection-oriented sockets.
     // ssize_t recv(int sockfd, void *buf, size_t len, int flags);
     // manpage: https://man7.org/linux/man-pages/man2/recv.2.html
-    char rx_buffer[100];
+    char rx_buffer[1000];
     char* rx_storage_buffer = NULL;
     int rx_storage_buffer_len = 0;
     int i;
@@ -469,7 +469,8 @@ void *thread_func(void *arg)
         for(i=0; i<rx_data_len; ++i)
         {   
             // Looking for new line character
-            if(rx_buffer[i] == 3)
+            if(rx_buffer[i] == '\0')
+            // if(rx_storage_buffer_len+i == 4000)
             {
                 packet_complete = true;
                 break;
@@ -526,7 +527,7 @@ void *thread_func(void *arg)
     printf("Data Len Received: %d\n", rx_storage_buffer_len);
     for(i=0;i<rx_storage_buffer_len;i++)
     {
-        printf("%c:", *(rx_storage_buffer+i));
+        printf("%d(%c):", *(rx_storage_buffer+i), *(rx_storage_buffer+i));
     }
     printf("\n"); // It seems line the system was buffering the printf so absense of new line was making it buffer and printing only the next time new line was met
     // Refer to https://stackoverflow.com/questions/39180642/why-does-printf-not-produce-any-output
@@ -564,6 +565,18 @@ void *thread_func(void *arg)
     //     // return -1;
     //     goto err_handle;
     // }
+
+    int file_output = open("output.ppm", O_RDWR | O_CREAT | O_APPEND, S_IWUSR | S_IRUSR | S_IWGRP | S_IRGRP | S_IROTH | S_IWOTH);
+    int bytes_written = write(file_output, rx_storage_buffer, rx_storage_buffer_len);
+    if(bytes_written == -1) // returns -1 on error else number of bytes written
+    {
+        printf("\nError: Failed write(). Error code: %d\n", errno);
+        // Syslog the error into the syslog file in /var/log
+        syslog(LOG_ERR, "Error: Failed write(). Error code: %d", errno);
+        // return -1;
+        goto err_handle;
+    }
+    close(file_output);
 #else
     /*********************************************************************************************************
                                     Writing to file /var/tmp/aesdsocketdata
