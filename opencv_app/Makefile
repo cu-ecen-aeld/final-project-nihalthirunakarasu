@@ -1,12 +1,13 @@
 # the ?= is not compatible in all the make versions so making it cross compatible by using := instead
 INCLUDE_DIRS = -I/usr/include/opencv4
+#INCLUDE_DIRS=
 LIB_DIRS = 
 CC 	:= $(CROSS_COMPILE)g++
 
 CDEFS=
 CFLAGS:= -O0 -g $(INCLUDE_DIRS) $(CDEFS)
-LIBS= -L/usr/lib -lopencv_core -lopencv_flann -lopencv_video -lrt -lstdc++fs -lpthread -lstdc++
-
+#LIBS= -L/usr/lib -lopencv_core -lopencv_flann -lopencv_video -lrt -lstdc++fs -lpthread -lstdc++
+LIBS=
 HFILES= 
 CFILES= aesd_opencv.cpp
 
