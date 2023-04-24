@@ -287,7 +287,7 @@ int main (int argc, char** argv)
     // ssize_t send(int sockfd, const void *buf, size_t len, int flags);
     // manpage : https://man7.org/linux/man-pages/man2/send.2.html
     
-    FILE* file_fd = fopen("./sample.ppm", "rb");
+    FILE* file_fd = fopen("./test.ppm", "rb");
 
     fseek(file_fd, 0, SEEK_END);
     int file_size = ftell(file_fd);
@@ -303,6 +303,8 @@ int main (int argc, char** argv)
         // return -1;
     }
     string[file_size] = '\0';
+    printf("The read size is: %d\n\n", bytes_read);
+    printf("The string size is: %d\n\n", strlen(string));
     for (int i = 0; i<=strlen(string); i++)
     {
         printf("%c (%d) ", *(string+i), *(string+i));
@@ -311,7 +313,7 @@ int main (int argc, char** argv)
 
     
     // char string[] = "Hi my name is nihal\n";
-    status = send(client_socket_fd, string, strlen(string)+1, 0);
+    status = send(client_socket_fd, string, bytes_read, 0);
     printf("Sent %d bytes of data\n", status);
     if(status == -1) // -1 if error else number of bytes transmitted
     {
