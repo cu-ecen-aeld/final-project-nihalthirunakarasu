@@ -23,13 +23,13 @@ SRCS= ${HFILES} ${CFILES}
 OBJS= ${CFILES:.cpp=.o}
 
 
-all:	aesd_opencv
+all:	aesd_opencv_file
 
 clean:
 	-rm -f *.o *.d
-	-rm -f aesd_opencv
+	-rm -f aesd_opencv_file
 
-aesd_opencv: aesd_opencv.cpp
+aesd_opencv_file: aesd_opencv.cpp
 	$(CC) aesd_opencv.cpp $(CFLAGS) -o $@ `pkg-config --libs opencv4` $(LIBS)
 
 depend:

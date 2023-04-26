@@ -25,7 +25,7 @@ using namespace std;
 #define DEBUG_SHOW 0       // Set to 1 to show frames at each step
 #define DEBUG_PRINT 1      // Set to 1 to print debug statements
 #define CONTINUOUS_MODE 1  // Set to zero to step though frames
-#define CAM_CAPTURE 1      // Set 0 to take input from file else from cam
+#define CAM_CAPTURE 0      // Set 0 to take input from file else from cam
 
 #define H_RES 320
 #define V_RES 240
@@ -38,20 +38,15 @@ int main(int argc, char** argv)
      **************************************************************/
     #if CAM_CAPTURE
     // Open the default camera
-    VideoCapture cap(0);
-    #if DEBUG_PRINT
     cout << 
     "Capturing from camera"
     << endl  ;
-    #endif
-    
+    VideoCapture cap(0);
     #else
-    VideoCapture cap("../test_videos/test.mp4");
-    #if DEBUG_PRINT
     cout << 
     "Capturing from file"
     << endl  ;
-    #endif
+    VideoCapture cap("./test.mp4");
     #endif
     
 
@@ -61,6 +56,9 @@ int main(int argc, char** argv)
         return -1;
     }
     
+    cout << 
+    "Successfully capturing video stream......"
+    << endl  ;
 
     // Read a new frame from the camera
     Mat frame;

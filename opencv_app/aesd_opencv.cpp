@@ -25,7 +25,7 @@ using namespace std;
 #define DEBUG_SHOW 0       // Set to 1 to show frames at each step
 #define DEBUG_PRINT 1      // Set to 1 to print debug statements
 #define CONTINUOUS_MODE 1  // Set to zero to step though frames
-#define CAM_CAPTURE 0      // Set 0 to take input from file else from cam
+#define CAM_CAPTURE 1      // Set 0 to take input from file else from cam
 
 #define H_RES 320
 #define V_RES 240
