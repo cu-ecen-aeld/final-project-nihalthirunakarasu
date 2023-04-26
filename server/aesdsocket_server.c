@@ -469,8 +469,8 @@ void *thread_func(void *arg)
         for(i=0; i<rx_data_len; ++i)
         {   
             // Looking for new line character
-            if(rx_buffer[i] == '\0')
-            // if(rx_storage_buffer_len+i == 4000)
+            // if(rx_buffer[i] == '\0')
+            if(rx_storage_buffer_len+i == 480016)
             {
                 packet_complete = true;
                 break;
