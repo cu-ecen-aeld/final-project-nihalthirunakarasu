@@ -38,20 +38,15 @@ int main(int argc, char** argv)
      **************************************************************/
     #if CAM_CAPTURE
     // Open the default camera
-    VideoCapture cap(0);
-    #if DEBUG_PRINT
     cout << 
     "Capturing from camera"
     << endl  ;
-    #endif
-    
+    VideoCapture cap(0);
     #else
-    VideoCapture cap("./test.mp4");
-    #if DEBUG_PRINT
     cout << 
     "Capturing from file"
     << endl  ;
-    #endif
+    VideoCapture cap("./test.mp4");
     #endif
     
 
@@ -61,6 +56,9 @@ int main(int argc, char** argv)
         return -1;
     }
     
+    cout << 
+    "Successfully capturing video stream......"
+    << endl  ;
 
     // Read a new frame from the camera
     Mat frame;
