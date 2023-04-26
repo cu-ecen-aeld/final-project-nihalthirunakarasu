@@ -17,7 +17,7 @@ CDEFS=
 LIBS= -L/usr/lib -lopencv_core -lopencv_flann -lopencv_video -lrt -lstdc++fs -lpthread -lstdc++
 #LIBS=
 HFILES= 
-CFILES= aesd_opencv.cpp
+CFILES= aesd_opencv_file.cpp
 
 SRCS= ${HFILES} ${CFILES}
 OBJS= ${CFILES:.cpp=.o}
@@ -29,8 +29,8 @@ clean:
 	-rm -f *.o *.d
 	-rm -f aesd_opencv_file
 
-aesd_opencv_file: aesd_opencv.cpp
-	$(CC) aesd_opencv.cpp $(CFLAGS) -o $@ `pkg-config --libs opencv4` $(LIBS)
+aesd_opencv_file: aesd_opencv_file.cpp
+	$(CC) aesd_opencv_file.cpp $(CFLAGS) -o $@ `pkg-config --libs opencv4` $(LIBS)
 
 depend:
 
