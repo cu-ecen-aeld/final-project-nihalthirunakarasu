@@ -46,7 +46,7 @@ int main(int argc, char** argv)
     #endif
     
     #else
-    VideoCapture cap("../test_videos/test.mp4");
+    VideoCapture cap("./test.mp4");
     #if DEBUG_PRINT
     cout << 
     "Capturing from file"
