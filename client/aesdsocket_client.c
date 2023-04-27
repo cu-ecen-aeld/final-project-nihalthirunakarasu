@@ -287,13 +287,14 @@ int main (int argc, char** argv)
     // ssize_t send(int sockfd, const void *buf, size_t len, int flags);
     // manpage : https://man7.org/linux/man-pages/man2/send.2.html
     
-    int file_fd = open("./test.txt", O_RDWR | O_APPEND);
+    FILE* file_fd = fopen("./test.ppm", "rb");
 
-    int file_size = lseek(file_fd, 0, SEEK_END);
-    lseek(file_fd, 0, SEEK_SET);
+    fseek(file_fd, 0, SEEK_END);
+    int file_size = ftell(file_fd);
+    fseek(file_fd, 0, SEEK_SET);
     printf("\nSize of file is: %d bytes\n", file_size);
     char* string = (char*) malloc(file_size);
-    int bytes_read = read(file_fd, string, file_size);
+    int bytes_read = fread(string, sizeof(char), file_size, file_fd);
     if(bytes_read == -1) // returns -1 on error else number of bytes read
     {
         printf("\nError: Failed read(). Error code: %d\n", errno);
@@ -301,12 +302,19 @@ int main (int argc, char** argv)
         syslog(LOG_ERR, "Error: Failed read(). Error code: %d", errno);
         // return -1;
     }
-    string[file_size] = 3;
+    string[file_size] = '\0';
+    printf("The read size is: %d\n\n", bytes_read);
+    printf("The string size is: %d\n\n", strlen(string));
+    for (int i = 0; i<=strlen(string); i++)
+    {
+        printf("%c (%d) ", *(string+i), *(string+i));
+    }
 
-    printf("The string is:\n%s\n", string);
 
+    
     // char string[] = "Hi my name is nihal\n";
-    status = send(client_socket_fd, string, strlen(string), 0);
+    status = send(client_socket_fd, string, bytes_read, 0);
+    printf("Sent %d bytes of data\n", status);
     if(status == -1) // -1 if error else number of bytes transmitted
     {
          printf("\nError: Failed send(). Error code: %d\n", errno);

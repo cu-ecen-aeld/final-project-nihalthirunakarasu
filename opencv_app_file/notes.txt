@@ -1,0 +1,6 @@
+Resources:
+1. OpenCV on Raspberry
+https://raspberrypi-guide.github.io/programming/install-opencv
+
+2. OpenCV C++ package
+https://vegastack.com/tutorials/how-to-install-opencv-on-ubuntu-20-04/
