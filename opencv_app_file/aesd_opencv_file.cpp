@@ -82,7 +82,7 @@ int main(int argc, char** argv)
             break;
         }
     
-        imshow("Input", frame);
+        //imshow("Input", frame);
 
         #if DEBUG_SHOW
         // Display the frame in the window
