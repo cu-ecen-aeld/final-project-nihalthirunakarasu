@@ -25,7 +25,7 @@ using namespace std;
 #define DEBUG_SHOW 0       // Set to 1 to show frames at each step
 #define DEBUG_PRINT 1      // Set to 1 to print debug statements
 #define CONTINUOUS_MODE 1  // Set to zero to step though frames
-#define CAM_CAPTURE 0      // Set 0 to take input from file else from cam
+#define CAM_CAPTURE 1      // Set 0 to take input from file else from cam
 
 #define H_RES 320
 #define V_RES 240
@@ -49,6 +49,7 @@ int main(int argc, char** argv)
     VideoCapture cap("./test.mp4");
     #endif
     
+    bool is_frame_different = false;
 
     // Check if camera opened successfully
     if(!cap.isOpened()){
@@ -209,14 +210,21 @@ int main(int argc, char** argv)
                 Rect bounding_rect = boundingRect(contours[i]);
                 rectangle(frame, bounding_rect, color, 2);
             }   
+	    is_frame_different = true;
          }
          
         /***************************************************************
          *                       Display Output
          **************************************************************/
          // Display the frame in the window
-         imshow("output: Motion Detection", frame);         
+         //imshow("output: Motion Detection", frame);         
          
+	 if(is_frame_different)
+	 {
+	    cout << "Difference in frames identified!!" << endl;
+	    is_frame_different = false;
+	 }
+
          #if CONTINUOUS_MODE
          // Wait for 30 milliseconds and check if user wants to quit
          if(waitKey(60) == 27){
