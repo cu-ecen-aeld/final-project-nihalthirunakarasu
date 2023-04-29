@@ -8,9 +8,16 @@
 # Port number
 PORT_NUMBER=5000
 # Client IP address
-CLIENT_IP=10.0.0.81
+CLIENT_IP=$1
 # Camera device
 CAM_DEV=/dev/video0
+
+#Error check 1: Check if number of arguments is 1
+if [ $# -ne 1 ]
+then
+    echo "Please enter one argument only- IP address of the RECEIVING Raspberry Pi"
+    exit 1
+fi
 
 echo "Sending stream to the client with IP address: $CLIENT_IP"
 
