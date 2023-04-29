@@ -18,18 +18,21 @@
  ********************************************************************************/
 #include <opencv2/opencv.hpp>
 #include <iostream>
+#include <stdlib.h>
 
 using namespace cv;
 using namespace std;
 
 #define DEBUG_SHOW 0       // Set to 1 to show frames at each step
-#define DEBUG_PRINT 1      // Set to 1 to print debug statements
+#define DEBUG_PRINT 0      // Set to 1 to print debug statements
 #define CONTINUOUS_MODE 1  // Set to zero to step though frames
 #define CAM_CAPTURE 1      // Set 0 to take input from file else from cam
 
 #define H_RES 320
 #define V_RES 240
 #define FPS 30
+
+char IP_NUMBER[] = '10.0.0.120';
 
 int main(int argc, char** argv)
 {
@@ -221,7 +224,12 @@ int main(int argc, char** argv)
          
 	 if(is_frame_different)
 	 {
+	    char buff[50];
+	    
 	    cout << "Difference in frames identified!!" << endl;
+	    
+	    system('./mqtt-publisher.sh 10.0.0.120');
+	    waitKey(180000);
 	    is_frame_different = false;
 	 }
 
