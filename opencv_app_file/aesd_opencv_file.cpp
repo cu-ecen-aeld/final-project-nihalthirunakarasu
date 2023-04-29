@@ -32,7 +32,7 @@ using namespace std;
 #define V_RES 240
 #define FPS 30
 
-char IP_NUMBER[] = '10.0.0.120';
+char IP_NUMBER[] = "10.0.0.120";
 
 int main(int argc, char** argv)
 {
@@ -228,7 +228,13 @@ int main(int argc, char** argv)
 	    
 	    cout << "Difference in frames identified!!" << endl;
 	    
-	    system('./mqtt-publisher.sh 10.0.0.120');
+	    int status = system("./mqtt-publisher.sh 10.0.0.120");
+	    if(status == -1)
+	    {
+		cout << 
+                "Error sending MQTT command"
+                << endl  ;
+	    }
 	    waitKey(180000);
 	    is_frame_different = false;
 	 }
