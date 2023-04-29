@@ -13,5 +13,7 @@ then
     exit 0
 fi
 
+echo $1
+
 # Send motion detected message to the subscriber
 mosquitto_pub -h $1 -t aesd -m motion
