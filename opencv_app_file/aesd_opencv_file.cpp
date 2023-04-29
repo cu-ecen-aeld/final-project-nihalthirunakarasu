@@ -44,7 +44,7 @@ int main(int argc, char** argv)
     cout << 
     "Capturing from camera"
     << endl  ;
-    VideoCapture cap(0);
+    VideoCapture cap("udpsrc port=5000 ! application/x-rtp,encoding-name=JPEG, payload=26 ! rtpjpegdepay ! jpegdec ! videoconvert ! appsink");
     #else
     cout << 
     "Capturing from file"
