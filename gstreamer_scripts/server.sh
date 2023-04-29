@@ -8,7 +8,7 @@
 # Port number
 PORT_NUMBER=5000
 # Client IP address
-CLIENT_IP=10.0.0.81
+CLIENT_IP=$1
 # Camera device
 CAM_DEV=/dev/video0
 
