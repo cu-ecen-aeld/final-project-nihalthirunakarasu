@@ -228,7 +228,7 @@ int main(int argc, char** argv)
 	    
 	    cout << "Difference in frames identified!!" << endl;
 	    
-	    int status = system("./mqtt-publisher.sh 10.0.0.120");
+	    int status = system("./usr/bin/mqtt-publisher.sh 10.0.0.120");
 	    if(status == -1)
 	    {
 		cout << 
