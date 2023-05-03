@@ -6,7 +6,7 @@ ifeq ($(CC),)
 	CC = $(CROSS_COMPILE)g++
 endif
 ifeq ($(INCLUDE_DIRS),)
-	INCLUDE_DIRS = -I/usr/include/opencv4
+	INCLUDE_DIRS = -I/usr/include/opencv4 
 endif
 #CC 	:= $(CROSS_COMPILE)g++
 ifeq ($(CFLAGS),)

@@ -19,6 +19,7 @@
 #include <opencv2/opencv.hpp>
 #include <iostream>
 #include <stdlib.h>
+#include <string.h>
 
 using namespace cv;
 using namespace std;
@@ -34,8 +35,18 @@ using namespace std;
 
 char IP_NUMBER[] = "10.0.0.120";
 
-int main(int argc, char** argv)
+int main(int argc, char* argv[])
 {
+    
+    char string[] = "/usr/bin/mqtt-publisher.sh ";
+    cout << "First arg: " << strlen(string) << endl;
+    cout << "First arg: " << strlen(argv[1]) << endl;
+    
+    char* cmd = (char*)malloc(strlen(string)+strlen(argv[1]));
+    memcpy(cmd, string, strlen(string));
+    memcpy(cmd+strlen(string), argv[1], strlen(argv[1]));
+    
+    int status;
     /***************************************************************
      *                Source of Input
      **************************************************************/
@@ -65,10 +76,10 @@ int main(int argc, char** argv)
     << endl  ;
 
     // Read a new frame from the camera
-    Mat frame;
-    Mat prev_frame;
-    Mat pres_frame;
-    Mat processed_frame;
+    Mat frame(480, 640, CV_8UC3, Scalar(0, 0, 0));
+    Mat prev_frame(480, 640, CV_8UC3, Scalar(0, 0, 0));
+    Mat pres_frame(480, 640, CV_8UC3, Scalar(0, 0, 0));
+    Mat processed_frame(480, 640, CV_8UC3, Scalar(0, 0, 0));
     bool isFrame0 = true;
 
     // Loop to read frames from the camera and display them in the window
@@ -220,15 +231,15 @@ int main(int argc, char** argv)
          *                       Display Output
          **************************************************************/
          // Display the frame in the window
-         imshow("output: Motion Detection", frame);         
-         
+	 //imshow("output: Motion Detection", frame);
+	
 	 if(is_frame_different)
 	 {
 	    char buff[50];
 	    
-	    cout << "Difference in frames identified!!" << endl;
+	    cout << "Motion Detected!!" << endl;
 	    
-	    int status = system("/usr/bin/mqtt-publisher.sh 10.0.0.120");
+	    int status = system(cmd);
 	    if(status == -1)
 	    {
 		cout << 
@@ -236,6 +247,9 @@ int main(int argc, char** argv)
                 << endl  ;
 	    }
 	    is_frame_different = false;
+	    imwrite("temp.png", frame);
+	    frame = imread("temp.png", cv::IMREAD_COLOR);
+	    imshow("frame", frame);
 	 }
 
          #if CONTINUOUS_MODE
