@@ -220,7 +220,7 @@ int main(int argc, char** argv)
          *                       Display Output
          **************************************************************/
          // Display the frame in the window
-         //imshow("output: Motion Detection", frame);         
+         imshow("output: Motion Detection", frame);         
          
 	 if(is_frame_different)
 	 {
@@ -235,12 +235,11 @@ int main(int argc, char** argv)
                 "Error sending MQTT command"
                 << endl  ;
 	    }
-	    waitKey(10000);
 	    is_frame_different = false;
 	 }
 
          #if CONTINUOUS_MODE
-         // Wait for 30 milliseconds and check if user wants to quit
+         // Wait for 60 milliseconds and check if user wants to quit
          if(waitKey(60) == 27){
             cout << "User quit" << endl;
             break;
