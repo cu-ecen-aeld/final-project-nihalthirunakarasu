@@ -235,7 +235,7 @@ int main(int argc, char** argv)
                 "Error sending MQTT command"
                 << endl  ;
 	    }
-	    waitKey(180000);
+	    waitKey(10000);
 	    is_frame_different = false;
 	 }
 
